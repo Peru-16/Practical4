@@ -3,40 +3,59 @@ class Practical4
 // 1st task: method which converts a given number to its byte value
 public static byte getByte(int num) 
 {
-       byte result;
-      //divide the number by 128 and store it in temp
-        int temp = num / 128;
-       //if even
-       if (temp % 2 == 0) 
-        {
-            result = (byte) (num % 128); 
-        } 
-        else 
-        {
-            result = (byte) (num % 128 - 128);
-        }
-        
-        return result;
+    // Declare a byte variable to store the final value
+    byte result;
+
+    // Divide the input number by 128 to check if it falls in the range of a -128 to 127. 
+    int temp = num / 128;
+
+    // to check if the quotient is even
+    if (temp % 2 == 0) 
+    {
+        // If even, the number is in the range of 0 to 127
+        // Use modulo 128 to get  byte value
+        result = (byte) (num % 128);
     }
+    else 
+    {
+        // If odd, the number is in the range of -128 to -1
+        // Adjust by subtracting 128 and checking on overflow
+        result = (byte) (num % 128 - 128);
+    }
+
+    // Return the calculated byte value
+    return result;
+}
+
     
     
 // 2nd task : method which converts a given number to its short value
 public static short getShort(int num) 
 {
-     short result;
-        //divide the number by 32768 and store it in temp
-      int temp = num / 32768;
-        //if even
-     if (temp % 2 == 0) 
-      {
-          result = (short) (num % 32768);
-      } 
-      else  
-      {
-          result = (short) (num % 32768 - 32768);
-      }
-     return result;
-     }
+    // Declare a short variable to store the final value
+    short result;
+
+    // Divide the input number by 32768 to determine if it falls in the range  -32768 to 32767. 
+    int temp = num / 32768;
+
+    // to check if the quotient is even
+    if (temp % 2 == 0) 
+    {
+        // If even, the number is in the range of 0 to 32767
+        // Use modulo 32768 to get short value
+        result = (short) (num % 32768);
+    } 
+    else 
+    {
+        // If odd, the number is in the range of -32768 to -1
+        // Adjust by subtracting 32768 
+        result = (short) (num % 32768 - 32768);
+    }
+
+    // Return the calculated short value
+    return result;
+}
+
  
  
  
@@ -86,7 +105,7 @@ public static Number getValue(int num, String type)
 
 
 //task 4: method to convert a given number from one number system to other, identifying the input by prefix 
-public static String toXXSystem(String num, int targetSystem) 
+public static String toXXSystem(String num, String targetSystem) 
 {
     int decimal = 0;
 
@@ -122,13 +141,13 @@ public static String toXXSystem(String num, int targetSystem)
     // Convert the decimal to the target number system
     switch (targetSystem) 
     {
-        case 2: // target number system is Binary
+        case "2": // target number system is Binary
             return decimalToBinary(decimal);
-        case 8: // target number system is Octal
+        case "8": // target number system is Octal
             return decimalToOctal(decimal);
-        case 10: //target number system is Decimal
+        case "10": //target number system is Decimal
             return Integer.toString(decimal);
-        case 16: // target number system is Hexadecimal
+        case "16": // target number system is Hexadecimal
             return decimalToHexadecimal(decimal);
         default:
             throw new IllegalArgumentException("Invalid target number system.");
@@ -368,6 +387,5 @@ private static String hexadecimalToOctal(String hex)
 }
 
 
-                                      
-                                      
+
 }
