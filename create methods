@@ -1,0 +1,373 @@
+class Practical4
+{
+// 1st task: method which converts a given number to its byte value
+public static byte getByte(int num) 
+{
+       byte result;
+      //divide the number by 128 and store it in temp
+        int temp = num / 128;
+       //if even
+       if (temp % 2 == 0) 
+        {
+            result = (byte) (num % 128); 
+        } 
+        else 
+        {
+            result = (byte) (num % 128 - 128);
+        }
+        
+        return result;
+    }
+    
+    
+// 2nd task : method which converts a given number to its short value
+public static short getShort(int num) 
+{
+     short result;
+        //divide the number by 32768 and store it in temp
+      int temp = num / 32768;
+        //if even
+     if (temp % 2 == 0) 
+      {
+          result = (short) (num % 32768);
+      } 
+      else  
+      {
+          result = (short) (num % 32768 - 32768);
+      }
+     return result;
+     }
+ 
+ 
+ 
+//3rd task: to handle both byte and short with all possible variations 
+// Function to handle both byte and short cases based on the input type
+
+public static Number getValue(int num, String type) 
+{
+    // check if the type is "short" or "byte" by comparing characters
+    if (type.charAt(0) == 's' || type.charAt(0) == 'S') 
+    {
+        // Check for "short"
+        if (type.charAt(1) == 'h' || type.charAt(1) == 'H') 
+        {
+            if (type.charAt(2) == 'o' || type.charAt(2) == 'O') 
+            {
+                if (type.charAt(3) == 'r' || type.charAt(3) == 'R') 
+                {
+                    if (type.charAt(4) == 't' || type.charAt(4) == 'T') 
+                    {
+                        return getShort(num); // If "short" calls getShort()
+                    }
+                }
+            }
+        }
+    }
+    else if (type.charAt(0) == 'b' || type.charAt(0) == 'B') 
+    {
+        // Check for "byte"
+        if (type.charAt(1) == 'y' || type.charAt(1) == 'Y') 
+        {
+            if (type.charAt(2) == 't' || type.charAt(2) == 'T')
+            {
+                if (type.charAt(3) == 'e' || type.charAt(3) == 'E') 
+                {
+                    return getByte(num); // If "byte" calls getByte()
+                }
+            }
+        }
+    }
+    
+    // Throw exception if not "short" or "byte"
+    throw new IllegalArgumentException("Invalid type. Use 'short' or 'byte'.");
+}
+
+
+
+
+//task 4: method to convert a given number from one number system to other, identifying the input by prefix 
+public static String toXXSystem(String num, int targetSystem) 
+{
+    int decimal = 0;
+
+    // Check the prefix of given number and identify the number system according to it
+    // if the length of num is greater than 2 and char at 0 is '0'
+    if (num.length() > 2 && num.charAt(0) == '0') 
+    {
+    //then it will check for char at index 1 of num
+        char secondChar = num.charAt(1);
+        
+        if (secondChar == 'b') 
+        { // num is Binary (0b)
+            decimal = binaryToDecimal(num.substring(2));
+        } 
+        else if (secondChar == 'o') 
+        { // num is Octal (0o)
+            decimal = octalToDecimal(num.substring(2));
+        } 
+        else if (secondChar == 'x') 
+        { //num is  Hexadecimal (0x)
+            decimal = hexadecimalToDecimal(num.substring(2));
+        } 
+        else 
+        { // num is Decimal, no prefix 
+            decimal = Integer.parseInt(num);
+        }
+    } 
+    else 
+    { // Decimal (no prefix)
+        decimal = Integer.parseInt(num);
+    }
+
+    // Convert the decimal to the target number system
+    switch (targetSystem) 
+    {
+        case 2: // target number system is Binary
+            return decimalToBinary(decimal);
+        case 8: // target number system is Octal
+            return decimalToOctal(decimal);
+        case 10: //target number system is Decimal
+            return Integer.toString(decimal);
+        case 16: // target number system is Hexadecimal
+            return decimalToHexadecimal(decimal);
+        default:
+            throw new IllegalArgumentException("Invalid target number system.");
+    }
+
+}
+
+// supporting methods for number system conversion
+// method to convert decimal to binary
+private static String decimalToBinary(int decimal) 
+{
+    // Initialize an empty string to store the binary representation
+    String binary = "";
+    
+    // Loop until the decimal number becomes zero
+    while (decimal > 0) 
+    {
+        // find the remainder when dividing the decimal number by 2
+        int remainder = decimal % 2;
+        
+        // collect the remainder to the binary string
+        binary = remainder + binary;
+        
+        // Divide the decimal number by 2 to continue the conversion
+        decimal = decimal / 2;
+    }
+    
+    // conditional statement to check if the binary string is empty ,then return "0" or return the binary string 
+    return binary.isEmpty() ? "0" : binary;
+}
+
+// method to convert decimal to octal
+private static String decimalToOctal(int decimal) 
+{
+    // Check if the input is 0 ,if yes then return 0
+    if (decimal == 0) 
+    {
+        return "0";
+    }
+    
+    // Initialize an empty string to store the octal representation
+    String octal = "";
+    
+    // Loop until the decimal number becomes zero
+    while (decimal > 0) 
+    {
+        // Find the remainder when dividing the decimal number by 8 
+        // collect the remainder to the octal string
+        octal = (decimal % 8) + octal;
+        
+        // Divide the decimal number by 8 to prepare for next repetation
+        decimal /= 8;
+    }
+    
+    // Return the final octal representation
+    return octal;
+}
+
+//convert the decimal num to hexadecimal
+private static String decimalToHexadecimal(int decimal) 
+{
+    // checks if the input num is 0 ,if yes then return 0
+    if (decimal == 0) 
+    {
+        return "0";
+    }
+    
+    // Initialize an empty string to store the hexadecimal representation
+    String hex = "";
+    
+    // Loop runs until the decimal number becomes zero
+    while (decimal > 0) 
+    {
+        // Calculate the remainder when dividing the decimal number by 16
+        int remainder = decimal % 16;
+        
+        // Convert the remainder to a hexadecimal digit
+        //conditional statement to check weather reminder is greater then or less than 10
+        // If the remainder is less than 10, it corresponds to a numeric digit (0-9).
+        // If the remainder is 10 or greater, it corresponds to a letter ('A'-'F').
+        String hexDigit = (remainder < 10) 
+                          ? String.valueOf(remainder) 
+                          : String.valueOf((char) ('A' + (remainder - 10)));
+        
+        // collect the hexadecimal digit to the hex string
+        hex = hexDigit + hex;
+        
+        // Divide the decimal number by 16 to prepare for the next repetation
+        decimal /= 16;
+    }
+    
+    // Return the final hexadecimal representation
+    return hex;
+}
+
+//convert octal to decimal
+private static int octalToDecimal(String octal) 
+{
+    // Initialize the decimal variable to store the decimal value
+    int decimal = 0;
+    
+    // Initialize the base value for octal (8^0 = 1 initially)
+    int base = 1;
+    
+    // Loop runs from last digit to the first
+    while (octal.length() > 0) 
+    {
+        // Extract the last digit of the octal string and convert it to an integer
+        int lastDigit = octal.charAt(octal.length() - 1) - '0';
+        
+        // Multiply the last digit by the current base value and add it to the decimal result
+        decimal += lastDigit * base;
+        
+        // Update the base value by multiplying it by 8 
+        base *= 8;
+        
+        // Remove the last digit from the octal string for the next iteration
+        octal = octal.substring(0, octal.length() - 1);
+    }
+    
+    // Return the calculated decimal value
+    return decimal;
+}
+
+// conversion of octal to binary
+private static String octalToBinary(String octal) 
+{
+    // Convert the octal number to its decimal form
+    int decimal = octalToDecimal(octal);
+    
+    // Convert the decimal number to its binary form
+    return decimalToBinary(decimal);
+}
+
+//convert octal to hexadecimal
+private static String octalToHexadecimal(String octal) 
+{
+    //convert the octal number to its decimal form
+    int decimal = octalToDecimal(octal);
+    // convert the decimal number to its hexadecimal form 
+    return decimalToHexadecimal(decimal);
+}
+
+
+// conversion from binary to decimal
+private static int binaryToDecimal(String binary) 
+{
+    // Initialize the decimal variable to store the decimal result
+    int decimal = 0;
+
+    // Initialize the base value for binary 
+    int base = 1;
+
+    // Loop through the binary string from the last character  to the first
+    for (int i = binary.length() - 1; i >= 0; i--) 
+    {
+        // Extract the current binary digit 'bit' and convert it to an integer
+        int bit = binary.charAt(i) - '0';
+        
+        // Add the bit's value multiplied by the current base to the decimal result
+        decimal += bit * base;
+        
+        // Update the base by multiplying it by 2 for the next higher binary place value
+        base *= 2;
+    }
+
+    // Return the resultant decimal value
+    return decimal;
+}
+
+//conversion of binary to octal
+private static String binaryToOctal(String binary) 
+{
+    //convert binary to decimal form
+    int decimal = binaryToDecimal(binary);
+    //convert decimal to octal form
+    return decimalToOctal(decimal);
+}
+
+//conversion of binary to hexadecimal
+private static String binaryToHexadecimal(String binary) 
+{
+   //convert binary to decimal form
+   int decimal = binaryToDecimal(binary);
+   //convert decimal num to hexadecimal form
+   return decimalToHexadecimal(decimal);
+}
+
+//convertion of hexadecimal to decimal
+private static int hexadecimalToDecimal(String hex) 
+{
+    // Initialize the decimal variable to store the decimal result
+    int decimal = 0;
+    
+    // Initialize the base value for hexadecimal 
+    int base = 1;
+    
+    // Loop through the hexadecimal string from the last character  to the first
+    for (int i = hex.length() - 1; i >= 0; i--) 
+    {
+        // Extract the current hexadecimal digit
+        char digit = hex.charAt(i);
+        
+        // Determine the numeric value of the hexadecimal digit:
+        //conditional statement is used to check weather the extracted digit is numeric or alphabetic
+        //  If it is between '0' and '9', the value is the digit minus '0'.
+        // If it's between 'A' and 'F', the value is the digit minus 'A' plus 10.
+        int value = (digit >= '0' && digit <= '9') ? digit - '0' : digit - 'A' + 10;
+        
+        // Add the value multiplied by the current base to the decimal result
+        decimal += value * base;
+        
+        // Update the base by multiplying it by 16 for the next higher hexadecimal place value
+        base *= 16;
+    }
+    
+    // Return the calculated decimal value
+    return decimal;
+}
+
+//conversion of hexadecimal to binary
+private static String hexadecimalToBinary(String hex) 
+{
+    //convert hexadecimal number to decimal form
+    int decimal = hexadecimalToDecimal(hex);
+    //convert decimal number to binary form
+    return decimalToBinary(decimal);
+}
+
+//conversion of hexadecimal to octal
+private static String hexadecimalToOctal(String hex) 
+{
+   //convert hexadecimal number to decimal form
+   int decimal = hexadecimalToDecimal(hex);
+   //convert decimal to octal form
+   return decimalToOctal(decimal);
+}
+
+
+                                      
+                                      
+}
